@@ -8,9 +8,7 @@ using namespace std;
 
 const int tam = 32;
 
-// Matriz de ajacencia de 4 linhas 4 colunas
 int G[tam][tam] = {
-//  A  B  C  D  E  F  G  H  I  J  K
   0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
   1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
   0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -43,10 +41,8 @@ int G[tam][tam] = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 
-
 };
 
-// Vetores visitados
 int v[tam];
 
 char *num_letra(int num) {
@@ -87,7 +83,6 @@ char *num_letra(int num) {
   }
 }
 
-// Busca em profundidade
 void buscaEmProfundidade(int vertice) {
   v[vertice] = 1;
   printf(" %s ", num_letra(vertice));
@@ -114,16 +109,12 @@ int buscaEmProfundidadeComDestino(int origem, int destino) {
     for (column = origem; column < tam; column++) {
         if (G[origem][column]== 1) {
           if (v[column] == 0) {
-              if (destino == column) {
-                printf(" >%d ", destino);
-                return column;
+              if (buscaEmProfundidadeComDestino(column, destino) == destino) {
+                return destino;
               }
-              encontrado = buscaEmProfundidadeComDestino(column, destino);
           }
       }
     }
-    
-    return encontrado;
   }
 }
 
