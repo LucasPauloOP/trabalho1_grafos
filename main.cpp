@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include<stdlib.h>
+#include<conio.h>
 #include <queue>
+#include<locale.h>
 
 using namespace std;
 
@@ -108,7 +110,7 @@ void zeraVetorVisitados() {
 
 void printLegenda() {
   system("cls");
-  printf("Legendas dos estados do México");
+  printf("Legendas dos estados do México\n");
   printf("1 = baja california sur\t");
   printf("2 = baja california\t");
   printf("3 = sonnara\t");
@@ -129,7 +131,7 @@ void printLegenda() {
   printf("18 = veracruz\t");
   printf("19 = colima\t");
   printf("20 = michoacan\t");
-  printf("21 = estado de méxico");
+  printf("21 = estado de méxico\t");
   printf("22 = distrito federal ( mexico city)\t");
   printf("23 = Tlaxcala\t");
   printf("24 = Guerrero\t");
@@ -141,18 +143,62 @@ void printLegenda() {
   printf("30 = Campeche");
   printf("31 = Yucatán\t");
   printf("32 = Quintana Roo\t");
-  printf("33 = Guatemala\t");
-  printf("34 = Belize\t");
+
+  getch();
+}
+
+void escolhaUmaBusca() {
+  zeraVetorVisitados();
+  fflush(stdin);
+  system("cls");
+  printf("1 - Busca em profundidade\n");
+  printf("2 - Busca em largura\n");
+  printf("0 - Voltar ao menu principal");
+}
+
+void menu() {
+  fflush(stdin);
+  system("cls");
+  printf("1 - Mostrar legenda de cidades.\n");
+  printf("2 - Realize uma busca\n");
+
+  printf("0 - Encerre o programa");
+
 }
 
 
 int main() {
-  const int raiz = 0;
+  int escolhaMenu = 10;
+  int escolhaBuscas = 10;
+  setlocale(LC_ALL, "Portuguese");
+
+  while(escolhaMenu != 0) {
+    menu();
+    
+    printf("\n");
+    scanf("%d",&escolhaMenu);
+
+    if (escolhaMenu == 1) {
+      printLegenda();
+    }
+
+    if (escolhaMenu == 2) {
+      while (escolhaBuscas != 0) {
+         escolhaUmaBusca();
+          printf("\n");
+          scanf("%d", &escolhaBuscas);
+      }
+      
+      escolhaBuscas = 10;
+    }
+  }
+
+  /*const int raiz = 0;
   printf("Busca em profundidade");
   zeraVetorVisitados();
-  DFS(raiz);
+  DFS(raiz);*/
 
-  printf("\n\n\nBusca em largura");
+  /*printf("\n\n\nBusca em largura");
   zeraVetorVisitados();
-  BFS(raiz);
+  BFS(raiz);*/
 }
