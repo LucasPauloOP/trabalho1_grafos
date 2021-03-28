@@ -92,11 +92,38 @@ void buscaEmProfundidade(int vertice) {
   v[vertice] = 1;
   printf(" %s ", num_letra(vertice));
   for (int column = vertice; column < tam; column++) {
-    if (G[vertice][column]==0) {
+    if (G[vertice][column]== 1) {
       if (v[column] == 0) {
         buscaEmProfundidade(column);
       }
     }
+  }
+}
+
+int buscaEmProfundidadeComDestino(int origem, int destino) {
+  if (origem == destino) {
+    printf("%d", destino);
+    return destino;
+  } else {
+    int column;
+    int encontrado = 0;
+
+    v[origem] = 1;
+    printf(" %d ", origem);
+
+    for (column = origem; column < tam; column++) {
+        if (G[origem][column]== 1) {
+          if (v[column] == 0) {
+              if (destino == column) {
+                printf(" >%d ", destino);
+                return column;
+              }
+              encontrado = buscaEmProfundidadeComDestino(column, destino);
+          }
+      }
+    }
+    
+    return encontrado;
   }
 }
 
@@ -117,6 +144,42 @@ void buscaEmLargura(int vertice) {
         if (v[i] == 0) {
           fila.push(i);
           v[i] = 1;
+        }
+      }
+    }
+  }
+}
+
+void buscaEmLarguraComDestino(int origem, int destino) {
+  int i;
+  int no;
+  int destinoEncontrado;
+
+  if (origem == destino) {
+    printf(" %s ", num_letra(no));
+  } else {
+
+    v[origem] = 1;
+    queue<int> fila;
+    fila.push(origem);
+
+    while (!fila.empty()) {
+      no = fila.front();
+
+      if (no == destino) {
+        printf(" %s ", num_letra(no));
+        break;
+      }
+
+      fila.pop();
+      printf(" %s ", num_letra(no));
+      for (i = origem; i < tam; i++) {
+        
+        if (G[no][i] == 0) {
+          if (v[i] == 0) {
+            fila.push(i);
+            v[i] = 1;
+          }
         }
       }
     }
@@ -175,21 +238,37 @@ void escolhaUmaBusca() {
   printf("0 - Voltar ao menu principal");
 }
 
-void obras() {
-  int origem;
-  int destino;
+int menuBuscaComDestino() {
+  int opc;
+  fflush(stdin);
+  system("cls");
+  printf("\n1 - Busca com destino ");
+  printf("\n2 - Lista todos os estados usando a busca escolhida\n");
+  scanf("%d", &opc);
+
+  return opc;
+}
+
+void obtemOrigemDestino(int *origem, int *destino) {
   fflush(stdin);
   printLegenda();
 
   printf("\n\nDe acordo com os códigos de estados acima digite as informações a seguir");
 
   printf("\nCódigo do estado de origem: ");
-  scanf("%d", &origem);
+  scanf("%d", &*origem);
   fflush(stdin);
 
   printf("\nCódigo do estado de destino: ");
-  scanf("%d", &destino);
+  scanf("%d", &*destino);
+}
 
+void obras() {
+  system("cls");
+  int origem;
+  int destino;
+
+  obtemOrigemDestino(&origem, &destino);
   if (G[origem][destino] == 1) {
     G[origem][destino] = 0;
     G[destino][origem] = 0;
@@ -231,17 +310,39 @@ int main() {
 
     if (escolhaMenu == 2) {
       while (escolhaBuscas != 0) {
+        zeraVetorVisitados();
          escolhaUmaBusca();
           printf("\n");
           scanf("%d", &escolhaBuscas);
 
           if (escolhaBuscas == 1) {
-            buscaEmProfundidade(0);
+            int opcBuscaDestino = menuBuscaComDestino();
+
+            if (opcBuscaDestino == 1) {
+              int origem = 0;
+              int destino = 0;
+              obtemOrigemDestino(&origem, &destino);
+
+              buscaEmProfundidadeComDestino(origem, destino);
+            } else {
+              buscaEmProfundidade(0);
+            }
+
             getch();
           }
 
           if (escolhaBuscas == 2) {
-            buscaEmLargura(0);
+            int opcBuscaDestino = menuBuscaComDestino();
+
+            if (opcBuscaDestino == 1) {
+              int origem;
+              int destino;
+              obtemOrigemDestino(&origem, &destino);
+              buscaEmLarguraComDestino(origem, destino);
+            } else {
+              buscaEmLargura(0);
+            }
+
             getch();
           }
       }
@@ -253,13 +354,4 @@ int main() {
       obras();
     }
   }
-
-  /*const int raiz = 0;
-  printf("Busca em profundidade");
-  zeraVetorVisitados();
-  DFS(raiz);*/
-
-  /*printf("\n\n\nBusca em largura");
-  zeraVetorVisitados();
-  BFS(raiz);*/
 }
