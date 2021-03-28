@@ -49,37 +49,58 @@ int G[tam][tam] = {
 // Vetores visitados
 int v[tam];
 
-char num_letra(int num) {
+char *num_letra(int num) {
   switch(num) {
-    case 0: return 'A';
-    case 1: return 'B';
-    case 2: return 'C';
-    case 3: return 'D';
-    case 4: return 'E';
-    case 5: return 'F';
-    case 6: return 'G';
-    case 7: return 'H';
-    case 8: return 'I';
-    case 9: return 'J';
-    case 10: return 'K';
-    default: return ' ';
+    case 0: return "baja california sur";
+    case 1: return "baja california";
+    case 2: return "sonnara";
+    case 3: return "chihuahua";
+    case 4: return "sinaloa";
+    case 5: return "coahuila";
+    case 6: return "durango";
+    case 7: return "nuevo leão";
+    case 8: return "tamaulipas";
+    case 9: return "nagarit";
+    case 10: return "zacatec";
+    case 11: return "san luis patosi";
+    case 12: return "aguascalientes";
+    case 13: return "jalisco";
+    case 14: return "guanajuato";
+    case 15: return "queretaro";
+    case 16: return "hidalgo";
+    case 17: return "veracruz";
+    case 18: return "colima";
+    case 19: return "michoacan";
+    case 20: return "estado de méxico";
+    case 21: return "distrito federal ( mexico city)";
+    case 22: return "Tlaxcala";
+    case 23: return "Guerrero";
+    case 24: return "Morelos";
+    case 25: return "Puebla";
+    case 26: return "Daxaca";
+    case 27: return "Tabasco";
+    case 28: return "Chiap";
+    case 29: return "Campec";
+    case 30: return "Yucatán";
+    case 31: return "Quintana Roo";
+    default: return "";
   }
 }
 
 // Busca em profundidade
-void DFS(int vertice) {
+void buscaEmProfundidade(int vertice) {
   v[vertice] = 1;
-  printf(" %c ", num_letra(vertice));
+  printf(" %s ", num_letra(vertice));
   for (int column = vertice; column < tam; column++) {
     if (G[vertice][column]==0) {
       if (v[column] == 0) {
-        DFS(column);
+        buscaEmProfundidade(column);
       }
     }
   }
 }
 
-void BFS(int vertice) {
+void buscaEmLargura(int vertice) {
   int i;
   int no;
 
@@ -89,7 +110,7 @@ void BFS(int vertice) {
   while (!fila.empty()) {
     no = fila.front();
     fila.pop();
-    printf(" %1c ", num_letra(no));
+    printf(" %s ", num_letra(no));
     for (int i = vertice; i< tam; i++) {
       
       if (G[no][i] == 0) {
@@ -111,40 +132,38 @@ void zeraVetorVisitados() {
 void printLegenda() {
   system("cls");
   printf("Legendas dos estados do México\n");
-  printf("1 = baja california sur\t");
-  printf("2 = baja california\t");
-  printf("3 = sonnara\t");
-  printf("4 = chihuahua\t");
-  printf("5 = sinalua\t");
-  printf("6 = coahuila\t");
-  printf("7 = durango\t");
-  printf("8 = nuevo leão\t");
-  printf("9 = tamaulipas\t");
-  printf("10 = nagarit\t");
-  printf("11 = zacatecas");
-  printf("12 = san luis patosi\t");
-  printf("13 = aguascalientes\t");
-  printf("14 = jalisco\t");
-  printf("15 = guanajuato\t");
-  printf("16 = queretaro\t");
-  printf("17 = hidalgo\t");
-  printf("18 = veracruz\t");
-  printf("19 = colima\t");
-  printf("20 = michoacan\t");
-  printf("21 = estado de méxico\t");
-  printf("22 = distrito federal ( mexico city)\t");
-  printf("23 = Tlaxcala\t");
-  printf("24 = Guerrero\t");
-  printf("25 = Morelos\t");
-  printf("26 = Puebla\t");
-  printf("27 = Daxaca\t");
-  printf("28 = Tabasco\t");
-  printf("29 = Chiapas");
-  printf("30 = Campeche");
-  printf("31 = Yucatán\t");
-  printf("32 = Quintana Roo\t");
-
-  getch();
+  printf("0 = baja california sur\t");
+  printf("1 = baja california\t");
+  printf("2 = sonnara\t");
+  printf("3 = chihuahua\t");
+  printf("4 = sinalua\t");
+  printf("5 = coahuila\t");
+  printf("6 = durango\t");
+  printf("7 = nuevo leão\t");
+  printf("8 = tamaulipas\t");
+  printf("9 = nagarit\t");
+  printf("10 = zacatecas");
+  printf("11 = san luis patosi\t");
+  printf("12 = aguascalientes\t");
+  printf("13 = jalisco\t");
+  printf("14 = guanajuato\t");
+  printf("15 = queretaro\t");
+  printf("16 = hidalgo\t");
+  printf("17 = veracruz\t");
+  printf("18 = colima\t");
+  printf("19 = michoacan\t");
+  printf("20 = estado de méxico\t");
+  printf("21 = distrito federal ( mexico city)\t");
+  printf("22 = Tlaxcala\t");
+  printf("23 = Guerrero\t");
+  printf("24 = Morelos\t");
+  printf("25 = Puebla\t");
+  printf("26 = Daxaca\t");
+  printf("27 = Tabasco\t");
+  printf("28 = Chiapas");
+  printf("29 = Campeche");
+  printf("30 = Yucatán\t");
+  printf("31 = Quintana Roo\t");
 }
 
 void escolhaUmaBusca() {
@@ -156,12 +175,39 @@ void escolhaUmaBusca() {
   printf("0 - Voltar ao menu principal");
 }
 
+void obras() {
+  int origem;
+  int destino;
+  fflush(stdin);
+  printLegenda();
+
+  printf("\n\nDe acordo com os códigos de estados acima digite as informações a seguir");
+
+  printf("\nCódigo do estado de origem: ");
+  scanf("%d", &origem);
+  fflush(stdin);
+
+  printf("\nCódigo do estado de destino: ");
+  scanf("%d", &destino);
+
+  if (G[origem][destino] == 1) {
+    G[origem][destino] = 0;
+    G[destino][origem] = 0;
+    printf("\nRodovia colocada em obra com sucesso");
+  } else {
+    printf("\nRodovia não existe ou já se encontra em obras");
+  }
+
+  printf("\nPressione enter para prosseguir");
+  getch();
+}
+
 void menu() {
   fflush(stdin);
   system("cls");
   printf("1 - Mostrar legenda de cidades.\n");
   printf("2 - Realize uma busca\n");
-
+  printf("3 - Marque uma obra\n");
   printf("0 - Encerre o programa");
 
 }
@@ -180,6 +226,7 @@ int main() {
 
     if (escolhaMenu == 1) {
       printLegenda();
+      getch();
     }
 
     if (escolhaMenu == 2) {
@@ -187,9 +234,23 @@ int main() {
          escolhaUmaBusca();
           printf("\n");
           scanf("%d", &escolhaBuscas);
+
+          if (escolhaBuscas == 1) {
+            buscaEmProfundidade(0);
+            getch();
+          }
+
+          if (escolhaBuscas == 2) {
+            buscaEmLargura(0);
+            getch();
+          }
       }
       
       escolhaBuscas = 10;
+    }
+
+    if (escolhaMenu == 3) {
+      obras();
     }
   }
 
