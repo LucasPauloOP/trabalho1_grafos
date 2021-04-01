@@ -85,7 +85,7 @@ char *num_letra(int num) {
 
 void buscaEmProfundidade(int vertice) {
   v[vertice] = 1;
-  printf(" %1d ", vertice);
+  printf("\n%1d - %s", vertice, num_letra(vertice));
   for (int column = 0; column < tam; column++) {
     if (G[vertice][column]== 1) {
       if (v[column] == 0) {
@@ -97,14 +97,14 @@ void buscaEmProfundidade(int vertice) {
 
 int buscaEmProfundidadeComDestino(int origem, int destino) {
   if (origem == destino) {
-    printf("%d", destino);
+    printf("\n%1d - %s", destino,num_letra(destino));
     return destino;
   } else {
     int column;
     int encontrado = 0;
 
     v[origem] = 1;
-    printf(" %d ", origem);
+    printf("\n%1d - %s", origem, num_letra(origem));
 
     for (column = 0; column < tam; column++) {
         if (G[origem][column]== 1) {
@@ -128,7 +128,7 @@ void buscaEmLargura(int vertice) {
   while (!fila.empty()) {
     no = fila.front();
     fila.pop();
-    printf(" %s ", num_letra(no));
+    printf("\n%1d - %s ", no, num_letra(no));
     for (int i = vertice; i< tam; i++) {
       
       if (G[no][i] == 0) {
@@ -147,7 +147,7 @@ void buscaEmLarguraComDestino(int origem, int destino) {
   int destinoEncontrado;
 
   if (origem == destino) {
-    printf(" %s ", num_letra(no));
+    printf("\n%1d - %s ", no, num_letra(no));
   } else {
 
     v[origem] = 1;
@@ -158,12 +158,12 @@ void buscaEmLarguraComDestino(int origem, int destino) {
       no = fila.front();
 
       if (no == destino) {
-        printf(" %s ", num_letra(no));
+        printf("\n%1d - %s ", no, num_letra(no));
         break;
       }
 
       fila.pop();
-      printf(" %s ", num_letra(no));
+      printf("\n%1d - %s ", no, num_letra(no));
       for (i = origem; i < tam; i++) {
         
         if (G[no][i] == 0) {
@@ -318,7 +318,7 @@ int main() {
             } else {
               buscaEmProfundidade(0);
             }
-
+            printf("\nAperte enter para continuar.");
             getch();
           }
 
@@ -333,7 +333,7 @@ int main() {
             } else {
               buscaEmLargura(0);
             }
-
+            printf("\nAperte enter para continuar.");
             getch();
           }
       }
