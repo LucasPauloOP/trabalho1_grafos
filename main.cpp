@@ -5,7 +5,8 @@
 #include <iostream>
 #include <list>
 #include<locale.h>
-#define INFINITO 10000000
+#include<limits.h>
+#include <math.h>
 
 using namespace std;
 
@@ -57,7 +58,7 @@ char *num_letra(int num) {
     case 4: return "sinaloa";
     case 5: return "coahuila";
     case 6: return "durango";
-    case 7: return "nuevo le√£o";
+    case 7: return "nuevo le„o";
     case 8: return "tamaulipas";
     case 9: return "nagarit";
     case 10: return "zacatec";
@@ -70,7 +71,7 @@ char *num_letra(int num) {
     case 17: return "veracruz";
     case 18: return "colima";
     case 19: return "michoacan";
-    case 20: return "estado de m√©xico";
+    case 20: return "estado de mÈxico";
     case 21: return "distrito federal ( mexico city)";
     case 22: return "Tlaxcala";
     case 23: return "Guerrero";
@@ -80,7 +81,7 @@ char *num_letra(int num) {
     case 27: return "Tabasco";
     case 28: return "Chiap";
     case 29: return "Campec";
-    case 30: return "Yucat√°n";
+    case 30: return "Yucat·n";
     case 31: return "Quintana Roo";
     default: return "";
   }
@@ -188,7 +189,7 @@ void zeraVetorVisitados() {
 
 void printLegenda() {
   system("cls");
-  printf("Legendas dos estados do M√©xico\n");
+  printf("Legendas dos estados do MÈxico\n");
   printf("0 = baja california sur\t");
   printf("1 = baja california\t");
   printf("2 = sonnara\t");
@@ -196,7 +197,7 @@ void printLegenda() {
   printf("4 = sinalua\t");
   printf("5 = coahuila\t");
   printf("6 = durango\t");
-  printf("7 = nuevo le√£o\t");
+  printf("7 = nuevo le„o\t");
   printf("8 = tamaulipas\t");
   printf("9 = nagarit\t");
   printf("10 = zacatecas");
@@ -209,7 +210,7 @@ void printLegenda() {
   printf("17 = veracruz\t");
   printf("18 = colima\t");
   printf("19 = michoacan\t");
-  printf("20 = estado de m√©xico\t");
+  printf("20 = estado de mÈxico\t");
   printf("21 = distrito federal ( mexico city)\t");
   printf("22 = Tlaxcala\t");
   printf("23 = Guerrero\t");
@@ -219,7 +220,7 @@ void printLegenda() {
   printf("27 = Tabasco\t");
   printf("28 = Chiapas");
   printf("29 = Campeche");
-  printf("30 = Yucat√°n\t");
+  printf("30 = Yucat·n\t");
   printf("31 = Quintana Roo\t");
 }
 
@@ -247,13 +248,13 @@ void obtemOrigemDestino(int *origem, int *destino) {
   fflush(stdin);
   printLegenda();
 
-  printf("\n\nDe acordo com os c√≥digos de estados acima digite as informa√ß√µes a seguir");
+  printf("\n\nDe acordo com os cÛdigos de estados acima digite as informaÁıes a seguir");
 
-  printf("\nC√≥digo do estado de origem: ");
+  printf("\nCÛdigo do estado de origem: ");
   scanf("%d", &*origem);
   fflush(stdin);
 
-  printf("\nC√≥digo do estado de destino: ");
+  printf("\nCÛdigo do estado de destino: ");
   scanf("%d", &*destino);
 }
 
@@ -292,63 +293,71 @@ int grafo_pesos[tam][tam] = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 167, 128, 0,
 };
 
-int dijkstra(int orig, int dest)
-	{
-		// vetor de dist√¢ncias
-		int dist[tam];
-
-		// fila de prioridades de pair (distancia, v√©rtice)
-		priority_queue < pair<int, int>,
-					   vector<pair<int, int> >, greater<pair<int, int> > > pq;
-
-		// inicia o vetor de dist√¢ncias e visitados
-		for(int i = 0; i < tam; i++)
-		{
-			dist[i] = INFINITO;
-		}
-
-		// a dist√¢ncia de orig para orig √© 0
-		dist[orig] = 0;
-
-		// insere na fila
-		pq.push(make_pair(dist[orig], orig));
-
-		// loop do algoritmo
-		while(!pq.empty())
-		{
-			pair<int, int> p = pq.top(); // extrai o pair do topo
-			int u = p.second; // obt√©m o v√©rtice do pair
-			pq.pop(); // remove da fila
-
-			// verifica se o v√©rtice n√£o foi expandido
-			if(v[u] == 0)
-			{
-				// marca como visitado
-				v[u] = 1;
-
-				list<pair<int, int> >::iterator it;
-
-				// percorre os v√©rtices "v" adjacentes de "u"
-				for(it = adj[u].begin(); it != adj[u].end(); it++)
-				{
-					// obt√©m o v√©rtice adjacente e o custo da aresta
-					int vertice = it->first;
-					int custo_aresta = it->second;
-
-					// relaxamento (u, vertice)
-					if(dist[vertice] > (dist[u] + custo_aresta))
-					{
-						// atualiza a dist√¢ncia de "vertice" e insere na fila
-						dist[vertice] = dist[u] + custo_aresta;
-						pq.push(make_pair(dist[vertice], vertice));
-					}
-				}
-			}
-		}
-
-		// retorna a dist√¢ncia m√≠nima at√© o destino
-		//return dist[dest];
-	}
+void dijkstra(int origem, int destino) {
+  int dist[tam], custo [tam][tam], ant[tam];
+  int i, j, count, mindist, prox;
+  
+  for (i = 0; i < tam; i++) {
+    for(j = 0; j < tam; j++) {
+      if (grafo_pesos[i][j] == 0) {
+        custo[i][j] = 10000;
+      } else {
+        custo[i][j] = grafo_pesos[i][j];
+      }
+    }
+  }
+  
+  for (i = 0; i < tam; i++) {
+    dist[i] = custo[origem][i];
+    ant[i] = origem;
+  }
+  
+  dist[origem] = 0;
+  v[origem] = 1;
+  count = 1;
+  
+  while (count < tam -1) {
+    mindist = 10000;
+    for (i = 0;i < tam; i++) {
+      if (dist[i] < mindist && !v[i]) {
+        mindist = dist[i];
+        prox = i;
+      }
+    }
+    
+    v[prox] = 1;
+    
+    for (i =0; i < tam; i++) {
+      if (!v[i]) {
+        if ((mindist + custo[prox][i]) < dist[i]) {
+          dist[i] = mindist + custo[prox][i];
+          ant[i] = prox;
+        }
+      }
+    }
+    
+    count++;
+    
+  }
+  
+  for (i = 0; i< tam; i++) {
+    if (i != origem) {
+      printf("o custo dos nÛ È %d\n", dist[i]);
+      printf("O caminho È: %s", num_letra(i));
+      j = i;
+      do {
+        j = ant[j];
+        printf("<-%s", num_letra(j));
+        
+      } while(j != origem);
+    }
+    
+    printf("\n");
+    if (i == destino) break;
+  }
+  
+  
+} 
 
 void obras() {
   system("cls");
@@ -359,9 +368,11 @@ void obras() {
   if (G[origem][destino] == 1) {
     G[origem][destino] = 0;
     G[destino][origem] = 0;
+    grafo_pesos[origem][destino] = 0;
+    grafo_pesos[destino][origem] = 0;
     printf("\nRodovia colocada em obra com sucesso");
   } else {
-    printf("\nRodovia n√£o existe ou j√° se encontra em obras");
+    printf("\nRodovia n„o existe ou j· se encontra em obras");
   }
 
   printf("\nPressione enter para prosseguir");
@@ -443,7 +454,7 @@ int main() {
       int origem;
       int destino;
       obtemOrigemDestino(&origem, &destino);
-      dijkstra(destino, origem);
+      dijkstra(origem, destino);
       getch();
     }
 
